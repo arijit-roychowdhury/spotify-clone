@@ -39,6 +39,7 @@
 	"dependencies": {
 		"@fontsource/metropolis": "^5.1.0",
 		"@unsass/breakpoint": "^2.4.0",
-		"modern-normalize": "^3.0.1"
+		"modern-normalize": "^3.0.1",
+		"pkce-gen": "^1.1.0"
 	}
 }
