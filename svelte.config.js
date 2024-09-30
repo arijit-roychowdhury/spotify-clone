@@ -9,7 +9,7 @@ const config = {
 	// for more information about preprocessors
 	preprocess: sveltePreprocess({
 		scss: {
-			prependData: `@use "../styles/functions";
+			prependData: `@use "src/styles/functions";
 										@use "@unsass/breakpoint";
 										`,
 		}
