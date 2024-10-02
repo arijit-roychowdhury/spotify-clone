@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { Home, Search, ListMusic, type Icon } from "lucide-svelte";
-	import type { ComponentType } from "svelte";
+	import { tick, type ComponentType } from "svelte";
   import logo from '$assets/Spotify_Logo_RGB_White.png';
 	import { page } from "$app/stores";
 	import { fade } from "svelte/transition";
+	import { beforeNavigate } from "$app/navigation";
 
   export let desktop: boolean;
 
 	let isMobileMenuOpen: boolean = false;
 	$: isOpen = desktop || isMobileMenuOpen;
+
+	let openMenuButton: HTMLButtonElement;
+	let closeMenuButton: HTMLButtonElement;
 
   const menuItems: {path: string, label: string, icon: ComponentType<Icon>}[] = [
     {
@@ -28,12 +32,20 @@
     },
   ]; 
 
-	const openMenu = () => {
+	const openMenu = async () => {
 		isMobileMenuOpen = true;
+		await tick();
+		closeMenuButton.focus();
 	}
-	const closeMenu = () => {
+	const closeMenu = async () => {
 		isMobileMenuOpen = false;
+		await tick();
+		openMenuButton.focus();
 	}
+
+	beforeNavigate(() => {
+		isMobileMenuOpen = false;
+	});
 </script>
 
 <svelte:head>
@@ -48,13 +60,13 @@
 	{#if !desktop && isMobileMenuOpen}
 		<div class="overlay" on:click={closeMenu} transition:fade={{duration: 300}} />
 	{/if}
-  <nav aria-label="main">
+  <nav aria-label="Main">
 		{#if !desktop}
-			<button on:click={openMenu}>open</button>			
+			<button bind:this={openMenuButton} on:click={openMenu} aria-expanded={isOpen}>open</button>			
 		{/if}
-    <div class="nav-content-inner" class:is-hidden={!isOpen}>
+    <div class="nav-content-inner" class:is-hidden={!isOpen} style:visibility={isOpen ? 'visible' : 'hidden'}>
 			{#if !desktop}
-				<button on:click={closeMenu}>close</button>			
+				<button bind:this={closeMenuButton} on:click={closeMenu}>close</button>			
 			{/if}
       <img src={logo} class="logo" alt="Spotify" width="100px"/>
       <ul>
@@ -149,6 +161,7 @@
 				&.is-hidden {
 					transform: translateX(-100%);
 					opacity: 0;
+				transition: transform 300ms, opacity 300ms visibility 300ms;
 				}
 				@include breakpoint.down('md') {
 					display: block;
