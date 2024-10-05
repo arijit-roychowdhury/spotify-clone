@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { Home, Search, ListMusic, type Icon } from "lucide-svelte";
+	import { Home, Search, ListMusic, Menu, type Icon } from "lucide-svelte";
 	import { tick, type ComponentType } from "svelte";
   import logo from '$assets/Spotify_Logo_RGB_White.png';
 	import { page } from "$app/stores";
 	import { fade } from "svelte/transition";
 	import { beforeNavigate } from "$app/navigation";
+	import IconButton from "$components/IconButton.svelte";
 
   export let desktop: boolean;
 
@@ -78,12 +79,14 @@
 	{/if}
 </svelte:head>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="nav-content" class:desktop class:mobile={!desktop}>
 	{#if !desktop && isMobileMenuOpen}
 		<div class="overlay" on:click={closeMenu} on:keyup={handleEscape} transition:fade={{duration: 300}} />
 	{/if}
   <nav aria-label="Main">
 		{#if !desktop}
+			<IconButton icon={Menu} label="Open Menu" />
 			<button bind:this={openMenuButton} on:click={openMenu} aria-expanded={isOpen}>open</button>			
 		{/if}
     <div class="nav-content-inner" class:is-hidden={!isOpen} style:visibility={isOpen ? 'visible' : 'hidden'} on:keyup={handleEscape}>
