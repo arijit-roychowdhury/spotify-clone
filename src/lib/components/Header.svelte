@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
+	import { page } from "$app/stores";
 	import Navigation from "$components/Navigation.svelte";
+	import { ChevronDown } from "lucide-svelte";
 
+  $: user = $page.data.user;
 </script>
 
 
@@ -11,7 +14,20 @@
       <Navigation desktop={false}/>      
     {/if}
   </div>
-  <div class="right">Right</div>
+  <div class="right">
+    <div id="profile-button">
+      <button class="profile-button">
+        {#if user?.images && user.images.length > 0}
+          <img src={user.images[0].url} alt="" />
+        {:else}
+          <img src="https://picsum.photos/200/300?random=1" alt="" />
+        {/if}
+        <span class="profile-name">{user?.display_name}</span>
+        <span class="visually-hidden">Profile menu</span>
+        <ChevronDown class="profile-arrow" size="20" />
+      </button>
+    </div>
+  </div>
 </div>
 
 <style lang="scss">
@@ -21,4 +37,29 @@
     align-items: center;
     width: 100%;
   }
+  .profile-button {
+		background: none;
+		border: 1px solid var(--border);
+		padding: 5px;
+		border-radius: 25px;
+		display: flex;
+		align-items: center;
+		color: var(--text-color);
+		cursor: pointer;
+    .profile-name {
+      margin-left: 4px;
+    }
+		:global(.profile-arrow) {
+			margin-left: 3px;
+		}
+		img {
+			width: 28px;
+			height: 28px;
+			border-radius: 100%;
+			margin-right: 6px;
+		}
+		&:hover {
+			background-color: var(--accent-color);
+		}
+	}
 </style>
