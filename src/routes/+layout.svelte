@@ -27,7 +27,7 @@
 	{/if}
 	<div id="content">
 		<div id="topbar" bind:this={topbar}>
-			<div class="topbar-bg" style:background-color="var(--header-color)" style:opacity={headerOpacity}/>
+			<div class="topbar-bg" style:background-color="var(--header-color)" style:opacity={`${headerOpacity}`}/>
 			<Header />
 		</div>
 		<main id="main-content" class:logged-in={user}>

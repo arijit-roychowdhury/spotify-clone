@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Home, Search, ListMusic, Menu, type Icon } from "lucide-svelte";
+	import { Home, Search, ListMusic, Menu, X, type Icon } from "lucide-svelte";
 	import { tick, type ComponentType } from "svelte";
   import logo from '$assets/Spotify_Logo_RGB_White.png';
 	import { page } from "$app/stores";
@@ -12,8 +12,8 @@
 	let isMobileMenuOpen: boolean = false;
 	$: isOpen = desktop || isMobileMenuOpen;
 
-	let openMenuButton: HTMLButtonElement;
-	let closeMenuButton: HTMLButtonElement;
+	let openMenuButton: IconButton;
+	let closeMenuButton: IconButton;
 	let lastFocusableElement: HTMLAnchorElement;
 
   const menuItems: {path: string, label: string, icon: ComponentType<Icon>}[] = [
@@ -37,12 +37,12 @@
 	const openMenu = async () => {
 		isMobileMenuOpen = true;
 		await tick();
-		closeMenuButton.focus();
+		closeMenuButton.getButton().focus();
 	}
 	const closeMenu = async () => {
 		isMobileMenuOpen = false;
 		await tick();
-		openMenuButton.focus();
+		openMenuButton.getButton().focus();
 	}
 	const moveFocusToBottom = (e: KeyboardEvent) => {
 		if (desktop) return;
@@ -55,7 +55,7 @@
 		if (desktop) return;
 		if (e.key === "Tab" && !e.shiftKey) {
 			e.preventDefault();
-			closeMenuButton.focus();
+			closeMenuButton.getButton().focus();
 		}
 	}
 	const handleEscape = (e: KeyboardEvent) => {
@@ -86,12 +86,11 @@
 	{/if}
   <nav aria-label="Main">
 		{#if !desktop}
-			<IconButton icon={Menu} label="Open Menu" />
-			<button bind:this={openMenuButton} on:click={openMenu} aria-expanded={isOpen}>open</button>			
+			<IconButton icon={Menu} label="Open Menu" bind:this={openMenuButton} on:click={openMenu} aria-expanded={isOpen} class="menu-button"/>	
 		{/if}
     <div class="nav-content-inner" class:is-hidden={!isOpen} style:visibility={isOpen ? 'visible' : 'hidden'} on:keyup={handleEscape}>
 			{#if !desktop}
-				<button bind:this={closeMenuButton} on:click={closeMenu} on:keydown={moveFocusToBottom}>close</button>			
+			<IconButton icon={X} label="Close Menu" bind:this={closeMenuButton} on:click={closeMenu} on:keydown={moveFocusToBottom} class="close-menu-button"/>	
 			{/if}
       <img src={logo} class="logo" alt="Spotify" width="100px"/>
       <ul>
@@ -200,12 +199,22 @@
 				&.is-hidden {
 					transform: translateX(-100%);
 					opacity: 0;
-				transition: transform 300ms, opacity 300ms visibility 300ms;
+					transition: transform 300ms, opacity 300ms, visibility 300ms;
 				}
 				@include breakpoint.down('md') {
 					display: block;
 				}
 			}
+		}
+		:global(.menu-button) {
+			@include breakpoint.up('md') {
+				display: none;
+			}
+		}
+		:global(.close-menu-button) {
+			position: absolute;
+			top: 20px;
+			right: 20px;
 		}
 	}
 </style>

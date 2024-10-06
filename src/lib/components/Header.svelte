@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from "$app/environment";
 	import Navigation from "$components/Navigation.svelte";
 
 </script>
@@ -6,7 +7,9 @@
 
 <div class="content">
   <div class="left">
-    <Navigation desktop={false}/>
+    {#if browser}
+      <Navigation desktop={false}/>      
+    {/if}
   </div>
   <div class="right">Right</div>
 </div>
