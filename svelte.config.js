@@ -25,6 +25,7 @@ const config = {
 			$styles: 'src/styles',
 			$components: 'src/lib/components',
 			$assets: 'src/assets',
+			$actions: 'src/lib/actions',
 		}
 	}
 };
