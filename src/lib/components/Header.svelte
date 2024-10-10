@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import Navigation from '$components/Navigation.svelte';
 	import LogoutButton from '$components/LogoutButton.svelte';
-	import { createTippy } from '$actions/tippy';
+	import tippy from '$lib/actions/tippy/tippy';
 	import { ChevronDown, ExternalLink } from 'lucide-svelte';
 
 	$: user = $page.data.user;
@@ -19,7 +19,7 @@
 		<div id="profile-button">
 			<button
 				class="profile-button"
-				use:createTippy={{
+				use:tippy={{
 					content: document.getElementById('profile-menu') || undefined,
 					onMount: () => {
 						const template = document.getElementById('profile-menu');
