@@ -88,7 +88,8 @@ a {
 	}
 }
 
-.visually-hidden {
+.visually-hidden,
+.skip-link:not(:focus) {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -99,4 +100,20 @@ a {
 	clip-path: inset(100%);
 	border: 0;
 	white-space: nowrap;
+}
+
+.skip-link:focus {
+	position: absolute;
+	z-index: 200;
+	background: var(--accent-color);
+	color: #fff;
+	padding: 10px;
+	top: 10px;
+	left: 10px;
+	outline: 2px solid;
+	font-weight: 500;
+}
+
+#nprogress .bar {
+	background: var(--accent-color) !important;
 }

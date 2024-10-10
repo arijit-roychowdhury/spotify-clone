@@ -5,7 +5,8 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		interface PageData {
-			user: SpotifyApi.CurrentUsersProfileResponse | null
+			user: SpotifyApi.CurrentUsersProfileResponse | null;
+			title?: string;
 		}
 		// interface PageState {}
 		// interface Platform {}
