@@ -70,6 +70,11 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+		:global(html.no-js) & {
+			@include breakpoint.down('md') {
+				justify-content: flex-start;
+			}
+		}
 	}
 	.profile-button {
 		background: none;
@@ -82,6 +87,9 @@
 		cursor: pointer;
 		.profile-name {
 			margin-left: 4px;
+		}
+		:global(html.no-js) & {
+			display: none;
 		}
 		:global(.profile-arrow) {
 			margin-left: 3px;
@@ -125,5 +133,17 @@
 				}
 			}
 		}
+	}
+	:global(html.no-js) #profile-menu {
+		display: block !important;
+		.profile-menu-content {
+			ul {
+				padding: 0;
+				margin: 0;
+				li {
+					display: inline-block;
+				}
+			}
+		}		
 	}
 </style>
