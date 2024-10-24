@@ -11,6 +11,7 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	let refreshPromise: Promise<Response> | undefined;
 }
 
 export {};

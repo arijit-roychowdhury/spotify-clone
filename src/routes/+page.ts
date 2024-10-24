@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import { fetchRefresh } from '$lib/helpers/fetch-refresh';
+import fetchRefresh from '$helpers/fetch-refresh';
 
 export const load: PageLoad = async ({ fetch: _fetch, parent }) => {
 	const fetch = (path: string) => fetchRefresh(_fetch, path);
