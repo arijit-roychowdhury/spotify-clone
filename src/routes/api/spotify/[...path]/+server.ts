@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ fetch, cookies, params, url }) => {
       throw new Error(responseJSON.error.status, responseJSON.error.message);
     }
     return json(responseJSON);
-  } catch (error) {
-    return json({ error: `An error occurred while fetching data: ${error}` }, { status: 500 });
+  } catch (error: any) {
+    return json({ error: `An error occurred while fetching data: ${error}` }, { status: error.status || 500 });
   }
 };
