@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { PageData } from '$lib/types';
+	import Button from '$lib/components/Button.svelte';
+	import Card from '$lib/components/Card.svelte';
 
 	export let data: PageData;
 	let sections: {
@@ -48,67 +50,41 @@
 </script>
 
 {#each sections as section}
-	<section>
-		<h2>{section.title}</h2>
-		<ul>
+	<section class="content-row">
+		<div class="content-row-header">
+			<div class="right">
+				<h2 class="section-title">{section.title}</h2>
+			</div>
+			<div class="left"> 
+				<Button element="a" href={section.path} variant="outline">
+					See All
+					<span class="visually-hidden">{section.title}</span>
+				</Button>
+			</div>
+		</div>
+		<div class="grid-items">
 			{#each section.items as item}
-				<li>
-					<a href={item.external_urls.spotify}>
-						<img src={item.images[0].url} alt={item.name} />
-						<p>{item.name}</p>
-					</a>
-				</li>
+				<div class="grid-item">
+					<Card {item} />					
+				</div>
 			{/each}
-		</ul>
+		</div>
 	</section>
 {/each}
 
 <style lang="scss">
-	section {
-		margin-bottom: 2rem;
-	}
-
-	h2 {
-		font-size: 2rem;
-		color: #1db954;
-		margin-bottom: 1rem;
-	}
-
-	ul {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		list-style: none;
-		padding: 0;
-	}
-
-	li {
-		background-color: #282828;
-		border-radius: 8px;
-		overflow: hidden;
-		width: 150px;
-		text-align: center;
-		transition: transform 0.2s;
-		&:hover {
-			transform: scale(1.05);
+	.content-row {
+		margin-bottom: 40px;
+		.content-row-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+			.section-title {
+				font-size: functions.toRem(22);
+				font-weight: 600;
+				margin: 0;
+			}
 		}
-	}
-
-	a {
-		color: inherit;
-		text-decoration: none;
-		display: block;
-		padding: 1rem;
-	}
-
-	img {
-		width: 100%;
-		height: auto;
-		border-bottom: 1px solid #1db954;
-	}
-
-	p {
-		margin: 0.5rem 0 0;
-		font-size: 1rem;
 	}
 </style>
