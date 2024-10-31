@@ -2,6 +2,7 @@
 	import getCopyrightSymbol from '$lib/helpers/copyright-symbol';
   import ItemPage from '$lib/components/ItemPage.svelte';
 	import type { PageData } from './$types';
+	import TrackList from '$lib/components/TrackList.svelte';
 
 	export let data: PageData;
 
@@ -24,13 +25,7 @@
 			>{`${album.total_tracks} Track${album.total_tracks > 1 ? 's' : ''}`}</span
 		>
 	</p>
-	<div class="tracks">
-		<ul>
-			{#each album.tracks.items as track}
-				<li>{track.name}</li>
-			{/each}
-		</ul>
-	</div>
+	<TrackList tracks={album.tracks.items}/>
 	<div class="credits">
 		<p class="date">
 			{new Date(album.release_date).toLocaleDateString('en', {
