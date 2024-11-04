@@ -2,7 +2,8 @@ import fetchRefresh from '$lib/helpers/fetch-refresh';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, depends, route }) => {
+	depends(`app:${route.id}`);
   const playlistRes = await fetchRefresh(fetch, `/api/spotify/playlists/${params.id}`);
   let color = null;
 
