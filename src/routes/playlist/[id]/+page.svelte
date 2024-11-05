@@ -12,6 +12,7 @@
 	$: color = data.color;
 	$: playlist = data.playlist;
 	$: tracks = data.playlist.tracks;
+	$: isFollowing = data.isFollowing;
 	$: currentPage = $page.url.searchParams.get('page') || 1;
 
 	let filteredTracks: SpotifyApi.TrackObjectFull[];
@@ -39,6 +40,7 @@
 	};
 </script>
 
+{isFollowing}
 <ItemPage
 	title={playlist.name}
 	image={playlist.images.length > 0 ? playlist.images[0].url : undefined}
