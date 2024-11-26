@@ -3,8 +3,10 @@
 	import { page } from '$app/stores';
 	import TrackList from '$components/TrackList.svelte';
 	import ItemPage from '$components/ItemPage.svelte';
-  import Button from '$components/Button.svelte';
+	import Button from '$components/Button.svelte';
+	import toasts from '$stores/toasts';
 	import { Heart } from 'lucide-svelte';
+	import { tick } from 'svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -39,7 +41,7 @@
 		if (res.ok) {
 			tracks = { ...resJSON, items: [...tracks.items, ...resJSON.items] };
 		} else {
-			alert(resJSON.error.message || 'Could not load data!');
+			toasts.error(resJSON.error.message || 'Could not load data!');
 		}
 		isLoading = false;
 	};
@@ -72,15 +74,26 @@
 					isLoadingFollow = true;
 					return async ({ result }) => {
 						isLoadingFollow = false;
-						await applyAction(result);
-						followButton.focus();
 						if (result.type === 'success') {
+							await applyAction(result);
 							isFollowing = !isFollowing;
+						} else if (result.type === 'failure') {
+							toasts.error(result.data?.followError);
+							await tick();
+						} else {
+							await applyAction(result);
 						}
+						followButton.focus();
 					};
 				}}
 			>
-				<Button bind:this={followButton} element="button" type="submit" variant="outline" disabled={isLoadingFollow}>
+				<Button
+					bind:this={followButton}
+					element="button"
+					type="submit"
+					variant="outline"
+					disabled={isLoadingFollow}
+				>
 					<Heart aria-hidden focusable="false" fill={isFollowing ? 'var(--text-color)' : 'none'} />
 					{isFollowing ? 'Unfollow' : 'Follow'}
 					<span class="visually-hidden">{playlist.name} playlist</span>
