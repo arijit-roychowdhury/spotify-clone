@@ -21,12 +21,14 @@ export const load: PageLoad = async ({ fetch, params, depends, route, url, paren
 		throw error(playlistRes.status, 'Failed to load playlist!');
 	}
 
+
 	let isFollowing: boolean | null = null;
 
 	if (isFollowingRes.ok) {
 		const isFollowingJSON: SpotifyApi.UsersFollowPlaylistResponse = await isFollowingRes.json();
 		isFollowing = isFollowingJSON[0];
 	}
+
 
 	const playlistResJSON: SpotifyApi.SinglePlaylistResponse = await playlistRes.json();
 
@@ -60,5 +62,6 @@ export const load: PageLoad = async ({ fetch, params, depends, route, url, paren
 		title: playlistResJSON.name,
 		color,
 		isFollowing
+
 	};
 };

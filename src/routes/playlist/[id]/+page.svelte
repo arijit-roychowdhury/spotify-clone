@@ -91,7 +91,6 @@
 			</form>
 		{/if}
 	</div>
-
 	{#if playlist.tracks.items.length > 0}
 		<TrackList tracks={filteredTracks} />
 		{#if tracks.next}
