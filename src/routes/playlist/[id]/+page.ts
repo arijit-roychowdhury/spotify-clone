@@ -1,4 +1,4 @@
-import fetchRefresh from '$lib/helpers/fetch-refresh';
+import fetchRefresh from '$helpers/fetch-refresh';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
