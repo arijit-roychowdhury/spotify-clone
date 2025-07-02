@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { SPOTIFY_BASE_URL } from '$env/static/private';
-import { json } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ fetch, cookies, params, url }) => {
   const accessToken = cookies.get('access_token');
@@ -17,10 +17,15 @@ export const GET: RequestHandler = async ({ fetch, cookies, params, url }) => {
     
     const responseJSON = await response.json();
     if (responseJSON.error) {
-      throw new Error(responseJSON.error.status, responseJSON.error.message);
+      throw error(responseJSON.error.status || 500, responseJSON.error.message || 'Spotify API error');
     }
     return json(responseJSON);
-  } catch (error: any) {
-    return json({ error: `An error occurred while fetching data: ${error}` }, { status: error.status || 500 });
+  } catch (err: any) {
+    // If it's already a SvelteKit error, re-throw it
+    if (err.status) {
+      throw err;
+    }
+    // Otherwise, create a new error with proper status
+    throw error(500, `An error occurred while fetching data: ${err.message || err}`);
   }
 };

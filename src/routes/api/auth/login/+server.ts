@@ -13,12 +13,14 @@ const generateRandomString = (length: number) => {
 	return randomString;
 };
 
-const state = generateRandomString(16);
 const scope =
 	'ugc-image-upload user-modify-playback-state user-read-playback-state user-read-currently-playing user-follow-modify user-follow-read user-read-recently-played user-read-playback-position user-top-read playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private app-remote-control streaming user-read-email user-read-private user-library-modify user-library-read';
-const challenge = pkce.create();
 
 export const GET: RequestHandler = ({cookies}) => {
+  // Generate unique state and challenge per request for security
+  const state = generateRandomString(16);
+  const challenge = pkce.create();
+  
   cookies.set('spotify_auth_state', state, {
     path: '/',
     httpOnly: true,
